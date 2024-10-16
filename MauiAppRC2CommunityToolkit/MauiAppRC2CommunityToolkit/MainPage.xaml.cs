@@ -1,0 +1,45 @@
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using CommunityToolkit.Maui.Converters;
+
+namespace MauiAppRC2CommunityToolkit;
+
+public partial class MainPage : ContentPage
+{
+    int count = 0;
+
+    public MainPage()
+    {
+        BindingContext = new MainPageViewModel();
+        InitializeComponent();
+    }
+
+    private void OnCounterClicked(object sender, EventArgs e)
+    {
+        count++;
+
+        if (count == 1)
+            CounterBtn.Text = $"Clicked {count} time";
+        else
+            CounterBtn.Text = $"Clicked {count} times";
+
+        SemanticScreenReader.Announce(CounterBtn.Text);
+    }
+}
+
+
+public class MainPageViewModel : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler PropertyChanged;
+    
+    public bool IsValid { get; set; }
+
+    public MainPageViewModel()
+    {
+        IsValid = true;
+
+    }
+    
+    public void OnPropertyChanged([CallerMemberName] string name = "") =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+}
